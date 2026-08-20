@@ -9,7 +9,7 @@ export default function Navbar() {
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
   async function loadNotifications() { try { setNotifications(await api('/api/notifications')); } catch { setNotifications([]); } }
-  useEffect(() => { loadNotifications(); const timer = setInterval(loadNotifications, 30000); return () => clearInterval(timer); }, []);
+  useEffect(() => { loadNotifications(); const refresh = () => loadNotifications(); window.addEventListener('expenseTrack:notifications-changed', refresh); window.addEventListener('focus', refresh); const timer = setInterval(loadNotifications, 10000); return () => { window.removeEventListener('expenseTrack:notifications-changed', refresh); window.removeEventListener('focus', refresh); clearInterval(timer); }; }, []);
   async function markRead(notification) { if (!notification.read) { await api(`/api/notifications/${notification._id}/read`, { method: 'PATCH' }); setNotifications((items) => items.map((item) => item._id === notification._id ? { ...item, read: true } : item)); } }
   async function clearNotifications() { await api('/api/notifications', { method: 'DELETE' }); setNotifications([]); }
   const unread = notifications.filter((notification) => !notification.read).length;

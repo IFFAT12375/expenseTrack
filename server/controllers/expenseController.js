@@ -101,14 +101,17 @@ export async function update(req, res) {
     category: payload.category,
   });
   await expense.save();
+  await notifyGroupMembers(group, { actorId: req.user._id, type: "expense-updated", message: `${req.user.fullName} updated an expense in ${group.name}; balances may have changed.` });
   res.json(await expense.populate("paidBy splits.userId", "fullName username"));
 }
 export async function remove(req, res) {
   const expense = await Expense.findById(req.params.id);
   if (!expense) return res.status(404).json({ message: "Expense not found" });
-  if (!(await memberOf(expense.groupId, req.user._id)))
+  const group = await memberOf(expense.groupId, req.user._id);
+  if (!group)
     return res.status(403).json({ message: "Group access denied" });
   await expense.deleteOne();
+  await notifyGroupMembers(group, { actorId: req.user._id, type: "expense-deleted", message: `${req.user.fullName} deleted an expense from ${group.name}; balances may have changed.` });
   res.json({ message: "Expense deleted" });
 }
 export async function listAll(req, res) {

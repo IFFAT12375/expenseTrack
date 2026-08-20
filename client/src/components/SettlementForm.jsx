@@ -13,7 +13,7 @@ export default function SettlementForm({ groupId = '', members = [], onSuccess, 
     event.preventDefault();
     if (!selectedGroupId) return setError('Choose a group.');
     if (form.from === form.to || Number(form.amount) <= 0) return setError('Choose two different members and enter a positive amount.');
-    try { await api('/api/settlements', { method: 'POST', body: JSON.stringify({ ...form, groupId: selectedGroupId, amount: Number(form.amount) }) }); window.dispatchEvent(new Event('expenseTrack:data-changed')); onSuccess(); }
+    try { await api('/api/settlements', { method: 'POST', body: JSON.stringify({ ...form, groupId: selectedGroupId, amount: Number(form.amount) }) }); window.dispatchEvent(new Event('expenseTrack:data-changed')); window.dispatchEvent(new Event('expenseTrack:notifications-changed')); onSuccess(); }
     catch (requestError) { setError(requestError.message); }
   }
   return <form className="form-stack" onSubmit={submit}>

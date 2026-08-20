@@ -71,6 +71,7 @@ export default function GroupDetailPage() {
     try {
       await api(`/api/groups/${id}/leave`, { method: "POST" });
       window.dispatchEvent(new Event("expenseTrack:data-changed"));
+      window.dispatchEvent(new Event("expenseTrack:notifications-changed"));
       navigate("/dashboard", { replace: true });
     } catch (requestError) {
       setLeaveOpen(false);

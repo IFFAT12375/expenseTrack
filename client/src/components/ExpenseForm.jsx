@@ -78,6 +78,7 @@ export default function ExpenseForm({
         }),
       });
       window.dispatchEvent(new Event("expenseTrack:data-changed"));
+      window.dispatchEvent(new Event("expenseTrack:notifications-changed"));
       onSuccess();
     } catch (requestError) {
       setError(requestError.message);

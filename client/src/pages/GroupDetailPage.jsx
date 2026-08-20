@@ -72,7 +72,7 @@ export default function GroupDetailPage() {
       await api(`/api/groups/${id}/leave`, { method: "POST" });
       window.dispatchEvent(new Event("expenseTrack:data-changed"));
       window.dispatchEvent(new Event("expenseTrack:notifications-changed"));
-      navigate("/dashboard", { replace: true });
+      navigate("/groups", { replace: true });
     } catch (requestError) {
       setLeaveOpen(false);
       setError(requestError.message);
@@ -88,6 +88,12 @@ export default function GroupDetailPage() {
           <p className="muted">{group.members.length} members</p>
         </div>
         <div className="form-actions">
+          <button
+            className="secondary-button"
+            onClick={() => navigate("/groups")}
+          >
+            ← Back to groups
+          </button>
           <button
             className="secondary-button"
             onClick={() => setInviteOpen(true)}

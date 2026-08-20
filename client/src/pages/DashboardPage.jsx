@@ -82,7 +82,7 @@ export default function DashboardPage() {
           className="dashboard-groups"
           style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 1010 }}
         >
-          {data.groups.map((group) => (
+          {data.groups.slice(0, 4).map((group) => (
             <GroupCard key={group._id} group={group} />
           ))}
         </div>

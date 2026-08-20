@@ -11,7 +11,7 @@ import balanceRoutes from './routes/balances.js';
 import notificationRoutes from './routes/notifications.js';
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 app.use('/api/auth', authRoutes); app.use('/api/groups', groupRoutes); app.use('/api/expenses', expenseRoutes); app.use('/api/settlements', settlementRoutes); app.use('/api/dashboard', dashboardRoutes); app.use('/api/balances', balanceRoutes); app.use('/api/notifications', notificationRoutes);

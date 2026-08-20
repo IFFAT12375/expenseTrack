@@ -30,6 +30,7 @@ server/   Express, MongoDB, and JWT API
    MONGO_URI=mongodb://localhost:27017/expenseTrack
    JWT_SECRET=use_a_long_random_secret
    PORT=5000
+   CLIENT_ORIGIN=http://localhost:5173
    ```
 
 3. Start the API:
@@ -38,17 +39,18 @@ server/   Express, MongoDB, and JWT API
    npm run dev
    ```
 
-4. In a second terminal, install and start the frontend:
+4. In a second terminal, copy `client/.env.example` to `client/.env`, then install and start the frontend:
 
    ```bash
    cd client
+   cp .env.example .env
    npm install
    npm run dev
    ```
 
 5. Open `http://localhost:5173`.
 
-The Vite development server proxies `/api` requests to the API at `http://localhost:5000`.
+The Vite development server proxies `/api` requests to the API at `http://localhost:5000`. `VITE_API_URL` is optional locally; leaving it empty uses the proxy. Set it when the frontend and API run on different origins.
 
 ## Sample data
 
@@ -101,6 +103,14 @@ Protected endpoints require:
 Authorization: Bearer <jwt-token>
 ```
 
-## Production notes
+## Deployment
 
-Do not commit `server/.env`, database credentials, or JWT secrets. The repository ignores real environment files and keeps only `server/.env.example` for setup reference. Use a managed MongoDB instance, a strong JWT secret, HTTPS, and a restricted CORS origin before deploying.
+There is no checked-in deployment configuration or verified public deployment yet. The app can be deployed as two services:
+
+1. Deploy the API to a Node host such as Render, Railway, or Fly.io. Set `MONGO_URI`, `JWT_SECRET`, `PORT`, and `CLIENT_ORIGIN` to the final frontend URL. Use `npm start` from `server/` as the start command.
+2. Deploy `client/` as a static Vite site. Set `VITE_API_URL` to the public API URL, without a trailing slash, then use `npm run build`. Publish the generated `dist/` directory.
+3. Open the frontend URL, register a test account, and call `<api-url>/api/health` to confirm both services can reach each other.
+
+The API CORS setting accepts one frontend origin through `CLIENT_ORIGIN`. For multiple production origins, replace it with a reviewed origin allowlist rather than opening CORS to every site.
+
+Do not commit `server/.env`, `client/.env`, database credentials, or JWT secrets. The repository ignores real environment files and includes only safe `.env.example` templates.

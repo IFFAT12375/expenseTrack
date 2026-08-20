@@ -55,7 +55,7 @@ export default function GroupsPage() {
       {loading ? (
         <p>Loading groups...</p>
       ) : (
-        <div className="group-grid" style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 820 }}>
+        <div className="group-grid" style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 1010 }}>
           {groups.map((group) => (
             <GroupCard key={group._id} group={group} />
           ))}

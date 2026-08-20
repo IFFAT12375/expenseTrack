@@ -78,7 +78,10 @@ export default function DashboardPage() {
           <h2>Your groups</h2>
           <a href="/groups">View all</a>
         </div>
-        <div className="group-grid dashboard-groups">
+        <div
+          className="dashboard-groups"
+          style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 1010 }}
+        >
           {data.groups.map((group) => (
             <GroupCard key={group._id} group={group} />
           ))}

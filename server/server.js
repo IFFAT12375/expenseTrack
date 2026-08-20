@@ -1,0 +1,20 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import authRoutes from './routes/auth.js';
+import groupRoutes from './routes/groups.js';
+import expenseRoutes from './routes/expenses.js';
+import settlementRoutes from './routes/settlements.js';
+import dashboardRoutes from './routes/dashboard.js';
+import balanceRoutes from './routes/balances.js';
+
+const app = express();
+app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(express.json());
+app.get('/api/health', (req, res) => res.json({ ok: true }));
+app.use('/api/auth', authRoutes); app.use('/api/groups', groupRoutes); app.use('/api/expenses', expenseRoutes); app.use('/api/settlements', settlementRoutes); app.use('/api/dashboard', dashboardRoutes); app.use('/api/balances', balanceRoutes);
+app.use((error, req, res, next) => res.status(error.status || 500).json({ message: error.message || 'Server error' }));
+const port = process.env.PORT || 5000;
+if (process.env.NODE_ENV !== 'test') mongoose.connect(process.env.MONGO_URI).then(() => app.listen(port, () => console.log(`API running on http://localhost:${port}`))).catch((error) => { console.error('MongoDB connection failed:', error.message); process.exit(1); });
+export default app;

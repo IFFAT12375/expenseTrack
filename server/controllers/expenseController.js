@@ -1,5 +1,6 @@
 import Expense from "../models/Expense.js";
 import Group from "../models/Group.js";
+import { notifyGroupMembers } from "../utils/createNotifications.js";
 const memberOf = async (groupId, userId) =>
   Group.findOne({ _id: groupId, members: userId });
 function validatePayload(body, members) {
@@ -74,6 +75,7 @@ export async function create(req, res) {
       amount: Number(s.amount),
     })),
   });
+  await notifyGroupMembers(group, { actorId: req.user._id, type: "expense", message: `${req.user.fullName} added a ${Number(req.body.amount).toFixed(2)} expense to ${group.name}.` });
   res
     .status(201)
     .json(await expense.populate("paidBy splits.userId", "fullName username"));

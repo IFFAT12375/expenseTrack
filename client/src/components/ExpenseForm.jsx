@@ -77,6 +77,7 @@ export default function ExpenseForm({
           splits,
         }),
       });
+      window.dispatchEvent(new Event("expenseTrack:data-changed"));
       onSuccess();
     } catch (requestError) {
       setError(requestError.message);

@@ -27,5 +27,10 @@ export async function overall(req, res) {
     return { group, ...totalsForUser(balances, req.user._id), balances };
   });
   const allBalances = groupResults.flatMap((result) => result.balances);
-  res.json({ ...totalsForUser(allBalances, req.user._id), groups: groupResults });
+  // The All tab is a personal balance summary, so only include rows that
+  // involve the signed-in user. Group tabs continue to show every member row.
+  const personalBalances = allBalances.filter(
+    (row) => String(row.from._id) === String(req.user._id) || String(row.to._id) === String(req.user._id),
+  );
+  res.json({ ...totalsForUser(allBalances, req.user._id), balances: personalBalances, groups: groupResults });
 }

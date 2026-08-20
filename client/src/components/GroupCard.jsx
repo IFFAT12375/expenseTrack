@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../dashboard.css";
 export default function GroupCard({ group }) {
   const { user } = useAuth();
 
-  console.log("GroupCard group:", group);
-
-  const visibleMembers = (group.members || []).slice(0, 2);
+  const visibleMembers = (group.members || []).slice(0, 4);
   const remainingMembers = Math.max(
     (group.members?.length || 0) - visibleMembers.length,
     0,
@@ -43,7 +42,7 @@ export default function GroupCard({ group }) {
           </div>
         </div>
       </div>
-      {/* <span className="arrow">-&gt;</span> */}
+      {group.totalOwe !== undefined && <div className="group-card-totals"><span>You owe <b>${Number(group.totalOwe).toFixed(2)}</b></span><span>Owed to you <b>${Number(group.totalOwed).toFixed(2)}</b></span></div>}
     </Link>
   );
 }

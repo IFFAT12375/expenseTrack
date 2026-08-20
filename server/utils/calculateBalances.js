@@ -1,7 +1,10 @@
 export default function calculateBalances(expenses = [], settlements = []) {
   const balances = {};
-  const add = (creditor, debtor, amount) => {
-    if (String(creditor) === String(debtor) || !amount) return;
+  const idOf = (value) => String(value?._id || value || '');
+  const add = (creditorValue, debtorValue, amount) => {
+    const creditor = idOf(creditorValue);
+    const debtor = idOf(debtorValue);
+    if (!creditor || !debtor || creditor === debtor || !amount) return;
     const key = `${creditor}_${debtor}`;
     const reverse = `${debtor}_${creditor}`;
     if (Object.prototype.hasOwnProperty.call(balances, reverse)) balances[reverse] -= amount;

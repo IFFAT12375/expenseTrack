@@ -11,11 +11,24 @@ export default function DashboardPage() {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [expenseOpen, setExpenseOpen] = useState(false);
   const [error, setError] = useState("");
+  const [historyClearedAt, setHistoryClearedAt] = useState(() => Number(localStorage.getItem("expense-history-cleared-at") || 0));
+  async function loadDashboard() {
+    const [result, balanceData] = await Promise.all([api("/api/dashboard"), api("/api/balances")]);
+    const syncedGroups = result.groups.map((group) => {
+      const balanceGroup = balanceData.groups.find((entry) => entry.group._id === group._id);
+      return balanceGroup ? { ...group, totalOwe: balanceGroup.totalOwe, totalOwed: balanceGroup.totalOwed } : group;
+    });
+    setData({ ...result, groups: syncedGroups, totalOwe: balanceData.totalOwe, totalOwed: balanceData.totalOwed, activity: result.activity.filter((item) => new Date(item.date || item.createdAt).getTime() > historyClearedAt) });
+  }
   useEffect(() => {
-    api("/api/dashboard")
-      .then(setData)
-      .catch((e) => setError(e.message));
-  }, []);
+    loadDashboard().catch((e) => setError(e.message));
+  }, [historyClearedAt]);
+  useEffect(() => {
+    const refresh = () => loadDashboard().catch((e) => setError(e.message));
+    window.addEventListener("expenseTrack:data-changed", refresh);
+    return () => window.removeEventListener("expenseTrack:data-changed", refresh);
+  }, [historyClearedAt]);
+  function clearHistory() { const clearedAt = Date.now(); localStorage.setItem("expense-history-cleared-at", String(clearedAt)); setHistoryClearedAt(clearedAt); }
   async function chooseGroup(groupId) {
     try {
       const group = await api(`/api/groups/${groupId}`);
@@ -46,17 +59,17 @@ export default function DashboardPage() {
       </div>
       <div className="stats">
         <div>
-          <p>You owe</p>
-          <strong className="negative">${data.totalOwe.toFixed(2)}</strong>
+          <p>You are owed</p>
+            <strong className="positive">${data.totalOwed.toFixed(2)}</strong>
         </div>
         <div>
-          <p>Owed to you</p>
-          <strong className="positive">${data.totalOwed.toFixed(2)}</strong>
+          <p>You owe</p>
+            <strong className="negative">${data.totalOwe.toFixed(2)}</strong>
         </div>
         <div>
           <p>Net balance</p>
           <strong className={net >= 0 ? "positive" : "negative"}>
-            ${Math.abs(net).toFixed(2)}
+            {net >= 0 ? "+" : "-"}${Math.abs(net).toFixed(2)}
           </strong>
         </div>
       </div>
@@ -65,7 +78,7 @@ export default function DashboardPage() {
           <h2>Your groups</h2>
           <a href="/groups">View all</a>
         </div>
-        <div className="group-grid">
+        <div className="group-grid dashboard-groups">
           {data.groups.map((group) => (
             <GroupCard key={group._id} group={group} />
           ))}
@@ -74,6 +87,7 @@ export default function DashboardPage() {
       <section>
         <div className="section-heading">
           <h2>Recent activity</h2>
+          {data.activity.length > 0 && <button className="ghost-button" onClick={clearHistory}>Clear history</button>}
         </div>
         <div className="activity-list">
           {data.activity.map((item) => (
@@ -101,7 +115,7 @@ export default function DashboardPage() {
             onSuccess={() => {
               setSelectedGroup(null);
               setExpenseOpen(false);
-              api("/api/dashboard").then(setData);
+              loadDashboard();
             }}
           />
         ) : (

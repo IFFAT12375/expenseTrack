@@ -57,15 +57,6 @@ export default function BalancesPage() {
       setMessage(error.message),
     );
   }, [selected]);
-  async function leaveGroup(groupId) {
-    try {
-      await api(`/api/groups/${groupId}/leave`, { method: "POST" });
-      setMessage("You left the group.");
-      await load();
-    } catch (error) {
-      setMessage(error.message);
-    }
-  }
   if (!data)
     return (
       <div className="page">
@@ -108,33 +99,6 @@ export default function BalancesPage() {
         ))}
       </div>
       <Summary data={view} />
-      {selectedGroup && (
-        <div className="balance-group-heading">
-          <div>
-            <h2>{selectedGroup.group.name}</h2>
-            <p className="muted">
-              Created by {selectedGroup.group.createdBy?.fullName || "you"}
-            </p>
-            {(selectedGroup.totalOwed > 0 || selectedGroup.totalOwe > 0) && (
-              <p className="form-error">
-                Settle your $
-                {Math.max(
-                  selectedGroup.totalOwed,
-                  selectedGroup.totalOwe,
-                ).toFixed(2)}{" "}
-                outstanding balance before leaving.
-              </p>
-            )}
-          </div>
-          <button
-            className="secondary-button"
-            disabled={selectedGroup.totalOwed > 0 || selectedGroup.totalOwe > 0}
-            onClick={() => leaveGroup(selectedGroup.group._id)}
-          >
-            Leave group
-          </button>
-        </div>
-      )}
       <div className="detail-grid">
         <section>
           <div className="section-heading">

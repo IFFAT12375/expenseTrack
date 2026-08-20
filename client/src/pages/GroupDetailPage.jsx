@@ -81,7 +81,7 @@ export default function GroupDetailPage() {
   if (!group) return <div className="page">{error || "Loading group..."}</div>;
   return (
     <div className="page">
-      <div className="page-heading">
+      <div className="page-heading group-detail-heading">
         <div>
           <p className="eyebrow">Group detail</p>
           <h1>{group.name}</h1>

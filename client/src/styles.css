@@ -110,6 +110,14 @@ a {
   align-items: flex-start;
   margin-bottom: 40px;
 }
+.group-detail-heading {
+  display: block;
+}
+.group-detail-heading .form-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
 .page h1,
 .auth-panel h1 {
   font-size: 45px;

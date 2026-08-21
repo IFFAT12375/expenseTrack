@@ -2,6 +2,10 @@
 
 ExpenseTrack is a MERN application for managing shared expenses across groups. Users can create groups, invite members, record expenses with equal or exact splits, track balances, record settlements, and receive activity notifications.
 
+## Live application
+
+[Open ExpenseTrack](https://client-psi-beryl-29.vercel.app)
+
 ## 🎥 Demo Video
 
 A 4–5 minute screen-recorded walkthrough demonstrating the main application flows.
@@ -122,7 +126,7 @@ Authorization: Bearer <jwt-token>
 
 ## Deployment
 
-There is no checked-in deployment configuration or verified public deployment yet. The app can be deployed as two services:
+The frontend is live at [https://client-psi-beryl-29.vercel.app](https://client-psi-beryl-29.vercel.app). The app can be deployed as two services:
 
 1. Deploy the API to a Node host such as Render, Railway, or Fly.io. Set `MONGO_URI`, `JWT_SECRET`, `PORT`, and `CLIENT_ORIGIN` to the final frontend URL. Use `npm start` from `server/` as the start command.
 2. Deploy `client/` as a static Vite site. Set `VITE_API_URL` to the public API URL, without a trailing slash, then use `npm run build`. Publish the generated `dist/` directory.

@@ -93,4 +93,4 @@ With another day, I would add automated tests for the balance utility and route 
 
 ## Deployment status
 
-The repository is prepared for separate frontend and API deployment through `VITE_API_URL` and `CLIENT_ORIGIN`, but a live deployment has not been verified from this workspace. The deployment steps in the README are intentionally written as a runbook, not a claim that the app is already live. The likely deployment failures to check first are an incorrect frontend API URL, a CORS origin mismatch, missing MongoDB network access, or a missing JWT secret.
+The frontend is deployed at [https://client-psi-beryl-29.vercel.app](https://client-psi-beryl-29.vercel.app). The repository supports separate frontend and API deployment through `VITE_API_URL` and `CLIENT_ORIGIN`; the deployment steps in the README serve as a runbook. The likely deployment failures to check first are an incorrect frontend API URL, a CORS origin mismatch, missing MongoDB network access, or a missing JWT secret.

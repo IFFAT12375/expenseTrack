@@ -2,6 +2,23 @@
 
 ExpenseTrack is a MERN application for managing shared expenses across groups. Users can create groups, invite members, record expenses with equal or exact splits, track balances, record settlements, and receive activity notifications.
 
+## 🎥 Demo Video
+
+A 4–5 minute screen-recorded walkthrough demonstrating the main application flows.
+
+▶️ [Watch the Demo](https://www.youtube.com/watch?v=sCNP7i-bL3E)
+
+The demo covers:
+
+- User authentication
+- Group creation and member invitation
+- Expense creation
+- Equal and exact splits
+- Group and overall balances
+- Settlements
+- Balance recalculation
+- Validation/error handling
+
 ## Project layout
 
 ```text

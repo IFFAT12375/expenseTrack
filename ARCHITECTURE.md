@@ -2,6 +2,23 @@
 
 This is a small split-expense app. The frontend is React with Vite. The backend is Express, MongoDB, and Mongoose. I used JWTs for sessions because they keep the API stateless and were enough for this project.
 
+## 🎥 Demo Video
+
+A 4–5 minute screen-recorded walkthrough demonstrating the main application flows.
+
+▶️ [Watch the Demo](https://www.youtube.com/watch?v=sCNP7i-bL3E)
+
+The demo covers:
+
+- User authentication
+- Group creation and member invitation
+- Expense creation
+- Equal and exact splits
+- Group and overall balances
+- Settlements
+- Balance recalculation
+- Validation/error handling
+
 ## How I approached it
 
 I treated groups, expenses, and settlements as the core of the app first. Once those flows worked, I added the dashboard summaries, per-group balance view, group membership actions, and notifications. The later work exposed a few cases where two screens were calculating the same number differently, so I moved toward one shared balance utility instead of putting balance math in React components.

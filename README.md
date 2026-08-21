@@ -2,9 +2,9 @@
 
 ExpenseTrack is a MERN application for managing shared expenses across groups. Users can create groups, invite members, record expenses with equal or exact splits, track balances, record settlements, and receive activity notifications.
 
-## Live application
+## Live URL
 
-[Open ExpenseTrack](https://client-psi-beryl-29.vercel.app)
+[Open and test ExpenseTrack](https://client-psi-beryl-29.vercel.app)
 
 ## 🎥 Demo Video
 
